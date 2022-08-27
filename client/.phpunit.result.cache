@@ -1,0 +1,1 @@
+{"version":1,"defects":{"ExampleTest::loginRepo":3,"AuthTest::testLogin":4,"AuthTest::doLogin":4,"AuthTest::registerNewUser":4,"ExampleTest::testExample":3},"times":{"ExampleTest::loginRepo":0.116,"AuthTest::testLogin":0.39,"AuthTest::doLogin":0.218,"AuthTest::registerNewUser":0.069,"ExampleTest::testExample":0.07}}

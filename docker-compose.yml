@@ -1,0 +1,102 @@
+version: "3.8"
+
+services:
+  first_backend:
+    container_name: client_api
+    build:
+      context: .
+      dockerfile: ./dockerfiles/client.dockerfile
+    depends_on:
+      - first_db
+      - redis
+      - mailhog
+      - rabbitmq
+    volumes:
+      - ./client:/app
+    ports:
+      - "9091:8000"
+    networks:
+      - app
+
+
+  second_backend:
+    container_name: admin_consume
+    build:
+      context: .
+      dockerfile: ./dockerfiles/admin.dockerfile
+    depends_on:
+      - rabbitmq
+      - second_db
+    volumes:
+      - ./admin:/app
+    ports:
+      - "9092:8000"
+    networks:
+      - app
+
+  first_db:
+    container_name: client_db
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: challenge_client
+      MYSQL_ROOT_PASSWORD: pass
+    volumes:
+      - db1:/var/lib/mysql
+    ports:
+      - "33690:3306"
+    networks:
+      - app
+
+  second_db:
+    container_name: admin_db
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: challenge_admin
+      MYSQL_ROOT_PASSWORD: pass
+    volumes:
+      - db2:/var/lib/mysql
+    ports:
+      - "33691:3306"
+    networks:
+      - app
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: always
+    ports:
+      - '63790:6379'
+    networks:
+      - app
+
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - '1025:1025' # smtp server
+      - '8025:8025' # web ui
+    networks:
+      - app
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.8-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    ports:
+      # AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672'
+    networks:
+      - app
+
+networks:
+  app:
+
+volumes:
+  db1:
+  db2:
