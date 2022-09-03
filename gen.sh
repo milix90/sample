@@ -1,7 +1,5 @@
 #!/usr/bin/bash
 
-docker-compose up
-
 docker exec -it client_api sh -c "cp .env.example .env"
 docker exec -it admin_consume sh -c "cp .env.example .env"
 
