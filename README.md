@@ -1,5 +1,5 @@
 ### CODE SAMPLE
-
+- run ```docker-compose up```
 - run shell file ```gen.sh```
 - you can check mailhog on port ```8025```
 - you can check rabbitmq on port ```15672```
